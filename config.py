@@ -5,7 +5,7 @@ db = SQLAlchemy()
 
 class Config:
     SQLALCHEMY_DATABASE_URI = (
-        "mysql+pymysql://root:park7873@localhost/flask_mini"  # DB 연결
+        "mysql+pymysql://root:park7873@localhost/flask"  # DB 연결
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = (
         False  # 데이터 변경 사항 추척 기능 비활성화 (메모리 사용량 절약)
