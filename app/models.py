@@ -6,6 +6,7 @@ from config import db
 
 KST = ZoneInfo("Asia/Seoul")
 
+
 class CommonModel(db.Model):
     __abstract__ = True
     id = db.Column(db.Integer, primary_key=True)
@@ -13,8 +14,10 @@ class CommonModel(db.Model):
         db.DateTime, default=lambda: datetime.now(tz=KST), nullable=False
     )
     updated_at = db.Column(
-        db.DateTime, default=lambda: datetime.now(tz=KST),
-        onupdate=lambda: datetime.now(tz=KST), nullable=False
+        db.DateTime,
+        default=lambda: datetime.now(tz=KST),
+        onupdate=lambda: datetime.now(tz=KST),
+        nullable=False,
     )
 
 
@@ -52,8 +55,6 @@ class User(CommonModel):
                 self.gender.value if hasattr(self.gender, "value") else self.gender
             ),
             "email": self.email,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
         }
 
 
@@ -69,8 +70,6 @@ class Image(CommonModel):
             "id": self.id,
             "url": self.url,
             "type": self.type.value if hasattr(self.type, "value") else self.type,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
         }
 
 
@@ -83,17 +82,6 @@ class Question(CommonModel):
     image_id = db.Column(db.Integer, db.ForeignKey("images.id"), nullable=False)
 
     image = db.relationship("Image", back_populates="questions")
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "is_active": self.is_active,
-            "sqe": self.sqe,
-            "image": self.image.to_dict() if self.image else None,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
-        }
 
 
 class Choices(CommonModel):
@@ -111,8 +99,6 @@ class Choices(CommonModel):
             "is_active": self.is_active,
             "sqe": self.sqe,
             "question_id": self.question_id,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
         }
 
 
@@ -126,6 +112,4 @@ class Answer(CommonModel):
             "id": self.id,
             "user_id": self.user_id,
             "choice_id": self.choice_id,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
         }
